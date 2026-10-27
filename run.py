@@ -12,6 +12,7 @@ from diffusers import DDIMScheduler
 from peft import set_peft_model_state_dict
 from src.ddpo.ddim_with_logprob import ddim_step_with_logprob
 from src.pickscore import FrozenScorer
+from tools.pickscore_processor import fetch_processor
 from src.policy import clipped_loss,color_fraction,roughness,standardized
 from src.sd import add_adapter,encode,load_pipeline,save_reload,seed_all,trainable_state
 
@@ -46,6 +47,21 @@ def trajectory(pipe,prompt,seed,steps,size):
 
 def evaluate(out):
     records=json.loads((out/"predictions.json").read_text())
+    prompt_to_channel=dict(CFG["test_prompts"])
+    test_index={prompt:i for i,(prompt,_) in enumerate(CFG["test_prompts"])}
+    for row in records:
+        frame=[]
+        for i in range(row["candidates"]):
+            name=f"{row['method']}-{test_index[row['prompt']]}-{i}.png"
+            with Image.open(out/name) as image:
+                frame.append(np.array(image.convert("RGB"),dtype=float)/255.)
+        with Image.open(out/row["selected_file"]) as selected:
+            actual_color=color_fraction(selected,prompt_to_channel[row["prompt"]])
+        diversity=float(np.mean([np.abs(frame[i]-frame[j]).mean() for i in range(len(frame)) for j in range(i)]))
+        if not np.isclose(actual_color,row["independent_color_fraction"],rtol=0,atol=1e-12) or not np.isclose(diversity,row["pairwise_pixel_l1"],rtol=0,atol=1e-12):
+            raise ValueError("Saved outputs differ from recorded independent diagnostics")
+        row["independent_color_fraction"]=actual_color
+        row["pairwise_pixel_l1"]=diversity
     summary=[]
     for name in dict.fromkeys(r["method"] for r in records):
         rows=[r for r in records if r["method"]==name]
@@ -80,13 +96,20 @@ def main(args):
     judge=None
     weights=None
     if not smoke:
-        if not args.head or not args.pickscore:
-            raise ValueError("Formal experiments require --head and --pickscore from the P02 release.")
+        if args.pickscore is None:
+            from tools.get_model import fetch
+            args.pickscore=fetch(args.cache/"PickScore")
+        with (args.pickscore/"model.safetensors").open("rb") as handle:
+            if hashlib.file_digest(handle,"sha256").hexdigest()!="ef31ef6fc5ff4d9bb90dd232df4e145887ba62c5a03aa2841415f8c25f18d52e":
+                raise ValueError("P02 scorer checkpoint differs from the pinned PickScore v1 model")
+        if hashlib.sha256(args.head.read_bytes()).hexdigest()!="b9cd5ee6aa4ca6cb749a291ddfbf3c3da56e39559b38f54fe9d0418f2fd6a597":
+            raise ValueError("P02 head differs from the frozen release head")
         raw=json.loads(args.head.read_text())
         weights=np.asarray(raw["weights"])
         if raw["features"]!=["prompt_cosine","mean_clause","worst_clause","clause_dispersion"] or not np.isfinite(weights).all():
             raise ValueError("Unexpected P02 head schema")
-        judge=FrozenScorer(args.pickscore,"cpu")
+        judge=FrozenScorer(args.pickscore,args.reward_device,[p for p,_ in CFG["train_prompts"]+CFG["test_prompts"]],
+                           fetch_processor(args.cache/"PickScore-processor"))
     def rewards(prompt,images):
         if smoke:
             # Fast test-only reward. It has no image/text preference meaning.
@@ -98,6 +121,7 @@ def main(args):
     params=add_adapter(pipe.unet,CFG["rank"])
     initial=trainable_state(pipe.unet)
     predictions=[]
+    base_candidates={}
     logs=[]
     updates={}
     for method in ["base","rerank","single-ddpo","constrained-ddpo"]:
@@ -105,6 +129,7 @@ def main(args):
         if method.endswith("ddpo"):
             opt=torch.optim.AdamW(params,lr=CFG["learning_rate"])
             for epoch in range(2 if smoke else CFG["epochs"]):
+                print(f"{method}: rollout epoch {epoch+1}",flush=True)
                 prompt,_=CFG["train_prompts"][epoch%len(CFG["train_prompts"])]
                 rollout=[trajectory(pipe,prompt,CFG["seed"]+epoch*10+i,steps,size) for i in range(n)]
                 images=[v[0] for v in rollout]
@@ -128,8 +153,14 @@ def main(args):
             updates[method]=save_reload(pipe.unet,initial,out/f"{method}.safetensors")
         for k,(prompt,hue) in enumerate(CFG["test_prompts"][:1 if smoke else None]):
             # Every arm draws the same n images per evaluation prompt.
-            imgs=[trajectory(pipe,prompt,CFG["seed"]+999+k*10+i,steps,size)[0] for i in range(n)]
-            score=rewards(prompt,imgs)
+            if method=="rerank":
+                # Exactly the same generated candidate bank as the frozen baseline.
+                imgs,score=base_candidates[k]
+            else:
+                imgs=[trajectory(pipe,prompt,CFG["seed"]+999+k*10+i,steps,size)[0] for i in range(n)]
+                score=rewards(prompt,imgs)
+                if method=="base":
+                    base_candidates[k]=(imgs,score)
             chosen=int(np.argmax(score)) if method=="rerank" else 0
             files=[]
             for j,img in enumerate(imgs):
@@ -145,7 +176,9 @@ def main(args):
     (out/"policy-log.json").write_text(json.dumps(logs,indent=2))
     (out/"run.json").write_text(json.dumps(dict(profile=args.mode,updates_l2=updates,
                    reward="smoke-total-variation" if smoke else "P02-frozen",
-                   reward_head_sha256=hashlib.sha256(args.head.read_bytes()).hexdigest() if args.head else None,
+                   reward_device="cpu" if smoke else args.reward_device,
+                   reward_head_sha256=hashlib.sha256(args.head.read_bytes()).hexdigest() if not smoke else None,
+                   torch=str(torch.__version__),hardware=torch.cuda.get_device_name() if pipe.device.type=="cuda" else "cpu",
                    training_trajectories_per_policy=n*(2 if smoke else CFG["epochs"])),indent=2))
     evaluate(out)
 
@@ -158,5 +191,6 @@ if __name__=="__main__":
     p.add_argument("--base",type=Path)
     p.add_argument("--out",type=Path)
     p.add_argument("--pickscore",type=Path)
-    p.add_argument("--head",type=Path)
+    p.add_argument("--reward-device",choices=["cpu","cuda"],default="cpu")
+    p.add_argument("--head",type=Path,default=ROOT/"examples/p02-head.json")
     main(p.parse_args())

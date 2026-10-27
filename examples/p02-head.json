@@ -1,0 +1,14 @@
+{
+  "weights": [
+    125.08284807747975,
+    37.8773164805426,
+    41.807039937593565,
+    -289.50819342261406
+  ],
+  "features": [
+    "prompt_cosine",
+    "mean_clause",
+    "worst_clause",
+    "clause_dispersion"
+  ]
+}
