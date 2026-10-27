@@ -1,0 +1,10 @@
+{
+  "profile": "demo",
+  "updates_l2": {
+    "single-ddpo": 0.038941833429533924,
+    "constrained-ddpo": 0.038941833429533924
+  },
+  "reward": "smoke-total-variation",
+  "reward_head_sha256": null,
+  "training_trajectories_per_policy": 4
+}

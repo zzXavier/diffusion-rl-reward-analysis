@@ -1,0 +1,38 @@
+{
+  "seed": 20261103,
+  "epochs": 8,
+  "candidates": 4,
+  "sample_steps": 6,
+  "resolution": 256,
+  "learning_rate": 0.0001,
+  "clip_range": 0.15,
+  "rank": 4,
+  "train_prompts": [
+    [
+      "a red mug on a white table",
+      0
+    ],
+    [
+      "a green vase on a white table",
+      1
+    ],
+    [
+      "a blue bowl on a white table",
+      2
+    ]
+  ],
+  "test_prompts": [
+    [
+      "a red bicycle on a neutral background",
+      0
+    ],
+    [
+      "a green chair on a neutral background",
+      1
+    ],
+    [
+      "a blue teapot on a neutral background",
+      2
+    ]
+  ]
+}

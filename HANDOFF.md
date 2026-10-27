@@ -1,9 +1,5 @@
-# P12 交接记录
+# Handoff
 
-当前阶段：上游版本已固定，正式验收待完成。
+Completed on CPU: two behavior tests, four smoke policies, two real stochastic rollouts per epoch, two epochs per trained arm, two passes over each epoch's stored old policy transitions, adapter checkpoint/reload checks and independent pixel diagnostics. Saved smoke traces and per-image results are in `examples/smoke/`. The run records 32 per-transition old/new log probabilities and both learned LoRA updates have nonzero L2 norm (0.03894183). Tiny-policy smoke rewards use image total variation.
 
-最近已核实：项目远端以及 UPSTREAM.md 中的源码提交。
-
-待执行：运行上游入口 scripts/train.py ，保存日志，再按项目 README 的实验目标添加留出集对照。
-
-验收要求：从干净克隆运行演示与正式基线，使用保存的预测重建结果，涉及训练则测试权重重载。
+Formal evaluation requires a completed P02 head and CPU PickScore checkpoint, plus the pinned SD1.5 base. Run `python run.py reproduce --base LOCAL_SD15 --pickscore LOCAL_PICKSCORE --head P02_HEAD --device cuda`. The checked-in smoke result tests the mechanics, not human preference alignment. After formal validation, regenerate tables with `python run.py evaluate` from a clean clone.
