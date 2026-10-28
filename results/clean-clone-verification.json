@@ -1,0 +1,108 @@
+{
+  "remote_commit": "d42f37d973e3450f623a6860cb046d9fc26dfcc3",
+  "clean_clone": true,
+  "unit_tests": 2,
+  "smoke_summary_matches": true,
+  "saved_png_and_prediction_reevaluation_matches": true,
+  "full_gpu_retraining": true,
+  "p02_head_sha256": "b9cd5ee6aa4ca6cb749a291ddfbf3c3da56e39559b38f54fe9d0418f2fd6a597",
+  "source_metrics": {
+    "base": {
+      "selected_reward": 35.646164146400885,
+      "independent_color_fraction": 0.08673604329427083,
+      "pairwise_pixel_l1": 0.3600121857553786
+    },
+    "rerank": {
+      "selected_reward": 36.3719009638232,
+      "independent_color_fraction": 0.124053955078125,
+      "pairwise_pixel_l1": 0.3600121857553786
+    },
+    "single-ddpo": {
+      "selected_reward": 35.652898208927034,
+      "independent_color_fraction": 0.08806864420572917,
+      "pairwise_pixel_l1": 0.3678201879031778
+    },
+    "constrained-ddpo": {
+      "selected_reward": 35.60057294005949,
+      "independent_color_fraction": 0.09010823567708333,
+      "pairwise_pixel_l1": 0.3691369626690013
+    }
+  },
+  "retrained_metrics": {
+    "base": {
+      "selected_reward": 35.646164146400885,
+      "independent_color_fraction": 0.08673604329427083,
+      "pairwise_pixel_l1": 0.3600121857553786
+    },
+    "rerank": {
+      "selected_reward": 36.3719009638232,
+      "independent_color_fraction": 0.124053955078125,
+      "pairwise_pixel_l1": 0.3600121857553786
+    },
+    "single-ddpo": {
+      "selected_reward": 35.63178403894068,
+      "independent_color_fraction": 0.088958740234375,
+      "pairwise_pixel_l1": 0.36761719835955947
+    },
+    "constrained-ddpo": {
+      "selected_reward": 35.59702655434807,
+      "independent_color_fraction": 0.08779398600260417,
+      "pairwise_pixel_l1": 0.3681652880788456
+    }
+  },
+  "absolute_differences": {
+    "base": {
+      "selected_reward": 0.0,
+      "independent_color_fraction": 0.0,
+      "pairwise_pixel_l1": 0.0
+    },
+    "rerank": {
+      "selected_reward": 0.0,
+      "independent_color_fraction": 0.0,
+      "pairwise_pixel_l1": 0.0
+    },
+    "single-ddpo": {
+      "selected_reward": 0.021114169986354625,
+      "independent_color_fraction": 0.0008900960286458287,
+      "pairwise_pixel_l1": 0.0002029895436183038
+    },
+    "constrained-ddpo": {
+      "selected_reward": 0.0035463857114237385,
+      "independent_color_fraction": 0.0023142496744791574,
+      "pairwise_pixel_l1": 0.0009716745901557355
+    }
+  },
+  "reference_update_l2": {
+    "single-ddpo": 0.4695962197022691,
+    "constrained-ddpo": 0.4710700045547154
+  },
+  "retrained_update_l2": {
+    "single-ddpo": 0.46796332687582537,
+    "constrained-ddpo": 0.4696376924123958
+  },
+  "retrained_policy_terms": 640,
+  "retrained_training_trajectories_per_policy": 32,
+  "retrained_terms_outside_ratio_clip": 0,
+  "sha256": {
+    "summary.csv": {
+      "shipped": "dc8a0b4794ab1778cd6959d5ce8acd4203f610dd97ca3b7631fd79f81ff4a7f2",
+      "retrained": "bddd82ceda2a019309148aa2ec21ff988bc5243cf5c37de8d03fca8e0ccd9707"
+    },
+    "predictions.json": {
+      "shipped": "3b41aedd4d6056f56f61e87ac46d863ca38913f91563b5407968a9f289eb2415",
+      "retrained": "c4a8754822867893ac7b96c3a9d4bb32455cfbee66c636d7261b00c23454ed93"
+    },
+    "single-ddpo.safetensors": {
+      "shipped": "dfd02587f5ea614ba1d20f89bd211b6712cd489a249ac53db09c5992fe50f26b",
+      "retrained": "2f080fca312ac97cba4fcf6ef960a6606b4e1de90705b9c4551da4390f8dd556"
+    },
+    "constrained-ddpo.safetensors": {
+      "shipped": "49aac1648833f0c54cca0631636ca12d8394261df601e12111bb6163ce697ec0",
+      "retrained": "53889544dbd19996111a967eb052d5b899353d4ada44f369c7706a442a5a1095"
+    },
+    "comparison.png": {
+      "shipped": "052f569e088c5d99d20098c56528248a093b2d4052810cb7db52d87a7991d0bc",
+      "retrained": "08a65ef1aa631c03e4fb81dd24e3cbc6fc52bf9ccef80beccd04a66440677d16"
+    }
+  }
+}
