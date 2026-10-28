@@ -101,13 +101,13 @@ def main(args):
             args.pickscore=fetch(args.cache/"PickScore")
         with (args.pickscore/"model.safetensors").open("rb") as handle:
             if hashlib.file_digest(handle,"sha256").hexdigest()!="ef31ef6fc5ff4d9bb90dd232df4e145887ba62c5a03aa2841415f8c25f18d52e":
-                raise ValueError("P02 scorer checkpoint differs from the pinned PickScore v1 model")
+                raise ValueError("Preference scorer checkpoint differs from the pinned PickScore v1 model")
         if hashlib.sha256(args.head.read_bytes()).hexdigest()!="b9cd5ee6aa4ca6cb749a291ddfbf3c3da56e39559b38f54fe9d0418f2fd6a597":
-            raise ValueError("P02 head differs from the frozen release head")
+            raise ValueError("Preference head differs from the frozen release head")
         raw=json.loads(args.head.read_text())
         weights=np.asarray(raw["weights"])
         if raw["features"]!=["prompt_cosine","mean_clause","worst_clause","clause_dispersion"] or not np.isfinite(weights).all():
-            raise ValueError("Unexpected P02 head schema")
+            raise ValueError("Unexpected preference head schema")
         judge=FrozenScorer(args.pickscore,args.reward_device,[p for p,_ in CFG["train_prompts"]+CFG["test_prompts"]],
                            fetch_processor(args.cache/"PickScore-processor"))
     def rewards(prompt,images):
@@ -175,7 +175,7 @@ def main(args):
     (out/"predictions.json").write_text(json.dumps(predictions,indent=2))
     (out/"policy-log.json").write_text(json.dumps(logs,indent=2))
     (out/"run.json").write_text(json.dumps(dict(profile=args.mode,updates_l2=updates,
-                   reward="smoke-total-variation" if smoke else "P02-frozen",
+                   reward="smoke-total-variation" if smoke else "frozen-preference-head",
                    reward_device="cpu" if smoke else args.reward_device,
                    reward_head_sha256=hashlib.sha256(args.head.read_bytes()).hexdigest() if not smoke else None,
                    torch=str(torch.__version__),hardware=torch.cuda.get_device_name() if pipe.device.type=="cuda" else "cpu",
@@ -192,5 +192,5 @@ if __name__=="__main__":
     p.add_argument("--out",type=Path)
     p.add_argument("--pickscore",type=Path)
     p.add_argument("--reward-device",choices=["cpu","cuda"],default="cpu")
-    p.add_argument("--head",type=Path,default=ROOT/"examples/p02-head.json")
+    p.add_argument("--head",type=Path,default=ROOT/"examples/preference-head.json")
     main(p.parse_args())

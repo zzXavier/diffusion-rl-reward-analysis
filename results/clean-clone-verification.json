@@ -5,7 +5,7 @@
   "smoke_summary_matches": true,
   "saved_png_and_prediction_reevaluation_matches": true,
   "full_gpu_retraining": true,
-  "p02_head_sha256": "b9cd5ee6aa4ca6cb749a291ddfbf3c3da56e39559b38f54fe9d0418f2fd6a597",
+  "reward_head_sha256": "b9cd5ee6aa4ca6cb749a291ddfbf3c3da56e39559b38f54fe9d0418f2fd6a597",
   "source_metrics": {
     "base": {
       "selected_reward": 35.646164146400885,
