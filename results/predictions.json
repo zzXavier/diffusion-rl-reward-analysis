@@ -1,0 +1,182 @@
+[
+  {
+    "method": "base",
+    "prompt": "a red bicycle on a neutral background",
+    "candidates": 4,
+    "selected_file": "base-0-0.png",
+    "selected_reward": 34.54959888392051,
+    "independent_color_fraction": 0.1020355224609375,
+    "pairwise_pixel_l1": 0.3643216101951849,
+    "rewards": [
+      34.54959888392051,
+      34.59744747183769,
+      33.88158653246106,
+      34.237232535248076
+    ]
+  },
+  {
+    "method": "base",
+    "prompt": "a green chair on a neutral background",
+    "candidates": 4,
+    "selected_file": "base-1-0.png",
+    "selected_reward": 36.92142094316689,
+    "independent_color_fraction": 0.0328521728515625,
+    "pairwise_pixel_l1": 0.3459036700346371,
+    "rewards": [
+      36.92142094316689,
+      37.13384223624387,
+      37.68786558652374,
+      37.187160037035326
+    ]
+  },
+  {
+    "method": "base",
+    "prompt": "a blue teapot on a neutral background",
+    "candidates": 4,
+    "selected_file": "base-2-0.png",
+    "selected_reward": 35.467472612115245,
+    "independent_color_fraction": 0.1253204345703125,
+    "pairwise_pixel_l1": 0.3698112770363137,
+    "rewards": [
+      35.467472612115245,
+      35.96978710702191,
+      35.0309090526716,
+      36.830389833108164
+    ]
+  },
+  {
+    "method": "rerank",
+    "prompt": "a red bicycle on a neutral background",
+    "candidates": 4,
+    "selected_file": "rerank-0-1.png",
+    "selected_reward": 34.59744747183769,
+    "independent_color_fraction": 0.2161407470703125,
+    "pairwise_pixel_l1": 0.3643216101951849,
+    "rewards": [
+      34.54959888392051,
+      34.59744747183769,
+      33.88158653246106,
+      34.237232535248076
+    ]
+  },
+  {
+    "method": "rerank",
+    "prompt": "a green chair on a neutral background",
+    "candidates": 4,
+    "selected_file": "rerank-1-2.png",
+    "selected_reward": 37.68786558652374,
+    "independent_color_fraction": 0.0011749267578125,
+    "pairwise_pixel_l1": 0.3459036700346371,
+    "rewards": [
+      36.92142094316689,
+      37.13384223624387,
+      37.68786558652374,
+      37.187160037035326
+    ]
+  },
+  {
+    "method": "rerank",
+    "prompt": "a blue teapot on a neutral background",
+    "candidates": 4,
+    "selected_file": "rerank-2-3.png",
+    "selected_reward": 36.830389833108164,
+    "independent_color_fraction": 0.15484619140625,
+    "pairwise_pixel_l1": 0.3698112770363137,
+    "rewards": [
+      35.467472612115245,
+      35.96978710702191,
+      35.0309090526716,
+      36.830389833108164
+    ]
+  },
+  {
+    "method": "single-ddpo",
+    "prompt": "a red bicycle on a neutral background",
+    "candidates": 4,
+    "selected_file": "single-ddpo-0-0.png",
+    "selected_reward": 34.583752733371,
+    "independent_color_fraction": 0.0964508056640625,
+    "pairwise_pixel_l1": 0.3771663258538007,
+    "rewards": [
+      34.583752733371,
+      34.33590880068541,
+      33.56130162016506,
+      33.84175111816825
+    ]
+  },
+  {
+    "method": "single-ddpo",
+    "prompt": "a green chair on a neutral background",
+    "candidates": 4,
+    "selected_file": "single-ddpo-1-0.png",
+    "selected_reward": 37.250427858094326,
+    "independent_color_fraction": 0.03424072265625,
+    "pairwise_pixel_l1": 0.35190503155743635,
+    "rewards": [
+      37.250427858094326,
+      36.33462763348482,
+      37.346822585994644,
+      36.82898813941692
+    ]
+  },
+  {
+    "method": "single-ddpo",
+    "prompt": "a blue teapot on a neutral background",
+    "candidates": 4,
+    "selected_file": "single-ddpo-2-0.png",
+    "selected_reward": 35.12451403531577,
+    "independent_color_fraction": 0.133514404296875,
+    "pairwise_pixel_l1": 0.37438920629829625,
+    "rewards": [
+      35.12451403531577,
+      35.55723063927596,
+      34.907323033519475,
+      36.60286904782822
+    ]
+  },
+  {
+    "method": "constrained-ddpo",
+    "prompt": "a red bicycle on a neutral background",
+    "candidates": 4,
+    "selected_file": "constrained-ddpo-0-0.png",
+    "selected_reward": 34.56658809675734,
+    "independent_color_fraction": 0.0967559814453125,
+    "pairwise_pixel_l1": 0.3770311742047079,
+    "rewards": [
+      34.56658809675734,
+      34.28515225036747,
+      33.701377487639306,
+      33.95389068694956
+    ]
+  },
+  {
+    "method": "constrained-ddpo",
+    "prompt": "a green chair on a neutral background",
+    "candidates": 4,
+    "selected_file": "constrained-ddpo-1-0.png",
+    "selected_reward": 37.11863186057166,
+    "independent_color_fraction": 0.035797119140625,
+    "pairwise_pixel_l1": 0.35336618194912517,
+    "rewards": [
+      37.11863186057166,
+      36.326540863699755,
+      37.3792911258887,
+      36.79021236494438
+    ]
+  },
+  {
+    "method": "constrained-ddpo",
+    "prompt": "a blue teapot on a neutral background",
+    "candidates": 4,
+    "selected_file": "constrained-ddpo-2-0.png",
+    "selected_reward": 35.116498862849475,
+    "independent_color_fraction": 0.1377716064453125,
+    "pairwise_pixel_l1": 0.37701353185317094,
+    "rewards": [
+      35.116498862849475,
+      35.6588064072392,
+      34.87024451711569,
+      36.760768070142426
+    ]
+  }
+]
