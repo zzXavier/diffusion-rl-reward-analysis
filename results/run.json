@@ -4,7 +4,7 @@
     "single-ddpo": 0.4695962197022691,
     "constrained-ddpo": 0.4710700045547154
   },
-  "reward": "P02-frozen",
+  "reward": "frozen-preference-head",
   "reward_device": "cuda",
   "reward_head_sha256": "b9cd5ee6aa4ca6cb749a291ddfbf3c3da56e39559b38f54fe9d0418f2fd6a597",
   "torch": "2.4.1+cu121",
