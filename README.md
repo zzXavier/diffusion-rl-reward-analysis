@@ -1,9 +1,19 @@
-# 图像生成强化学习
+# Diffusion RL reward analysis
 
-Compare DDPO policy updates, reranking and independent evaluation.
+![Measured tiny-pipeline smoke comparison](examples/smoke/comparison.png)
 
-## 当前进度
+The figure is a measured execution check on the small test pipeline. Formal results use the full base and a separate output directory.
 
-已建立私有复现仓库并登记上游版本。正在准备上游样例、固定数据划分和实际对照实验。
+This repo reuses the DDPO PyTorch author's stochastic DDIM transition log probability. The local runner rolls out complete trajectories, freezes the old probabilities, computes within-prompt advantages, performs clipped LoRA policy updates and reloads each adapter before evaluation.
 
-[交接记录](HANDOFF.md) · [上游版本](UPSTREAM.md)
+```shell
+python -m pip install -r requirements.txt
+python -m unittest discover -s tests
+python run.py demo --device cpu
+python run.py reproduce --pickscore /path/to/pickscore --head /path/to/P02/results/head.json
+python run.py evaluate
+```
+
+The demo uses a tiny test pipeline and a cheap total-variation reward to test the mechanics. Formal evaluation uses the frozen P02 preference scorer on CPU and the SD1.5 policy, plus an additional training arm with a small roughness penalty. Four arms share seeds and candidate count per test prompt. The reranking control selects the highest reward without training. Color-pixel coverage on held-out prompts and pairwise pixel distance are independent diagnostics; they measure narrow image properties. The config separates training and held-out prompts. The final deterministic DDIM step contributes an image but no policy-gradient term.
+
+Run outputs include original sample images, per-step old/new log probabilities and advantages, LoRA update norms, heads' checkpoint hashes, per-prompt diagnostics and the three-metric summary. See `HANDOFF.md` for actual run status.

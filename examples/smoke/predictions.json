@@ -1,0 +1,54 @@
+[
+  {
+    "method": "base",
+    "prompt": "a red bicycle on a neutral background",
+    "candidates": 2,
+    "selected_file": "base-0-0.png",
+    "selected_reward": 0.129068495677841,
+    "independent_color_fraction": 0.19140625,
+    "pairwise_pixel_l1": 0.16952486723856208,
+    "rewards": [
+      0.129068495677841,
+      0.1297201138519924
+    ]
+  },
+  {
+    "method": "rerank",
+    "prompt": "a red bicycle on a neutral background",
+    "candidates": 2,
+    "selected_file": "rerank-0-1.png",
+    "selected_reward": 0.1297201138519924,
+    "independent_color_fraction": 0.201171875,
+    "pairwise_pixel_l1": 0.16952486723856208,
+    "rewards": [
+      0.129068495677841,
+      0.1297201138519924
+    ]
+  },
+  {
+    "method": "single-ddpo",
+    "prompt": "a red bicycle on a neutral background",
+    "candidates": 2,
+    "selected_file": "single-ddpo-0-0.png",
+    "selected_reward": 0.12907903752899008,
+    "independent_color_fraction": 0.19140625,
+    "pairwise_pixel_l1": 0.16953252655228757,
+    "rewards": [
+      0.12907903752899008,
+      0.1297155017921147
+    ]
+  },
+  {
+    "method": "constrained-ddpo",
+    "prompt": "a red bicycle on a neutral background",
+    "candidates": 2,
+    "selected_file": "constrained-ddpo-0-0.png",
+    "selected_reward": 0.12907903752899008,
+    "independent_color_fraction": 0.19140625,
+    "pairwise_pixel_l1": 0.16953252655228757,
+    "rewards": [
+      0.12907903752899008,
+      0.1297155017921147
+    ]
+  }
+]
